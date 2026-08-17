@@ -25,18 +25,6 @@ Container {
   defaultItem: placeholder
   exclusiveMonitor: monitor
 
-  states: [
-	State {
-	  name: "hovered"
-	  when: root.hovered
-
-	  PropertyChanges {
-		root.barHeight: 30
-		root.workspaceWidth: 20
-	  }
-	}
-  ]
-
   Component {
 	id: placeholder
 
