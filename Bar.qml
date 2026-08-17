@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
@@ -27,13 +28,29 @@ Scope {
 	  required property var modelData
 	  property HyprlandMonitor monitor: Hyprland.monitorFor(modelData)
 
-	  WlrLayershell.keyboardFocus: IpcManager.focusState
+	  WlrLayershell.keyboardFocus: monitor.focused == true ? IpcManager.focusState :
+															 WlrKeyboardFocus.None
 	  color: "transparent"
 	  exclusionMode: ExclusionMode.Normal
 	  exclusiveZone: barExclusionZone
 	  implicitHeight: barMaxHeight
 	  mask: maskRegion
 	  screen: modelData
+
+	  Rectangle {
+		id: blurOverlay
+
+		color: Colors.base
+		implicitHeight: win.modelData.height
+		implicitWidth: win.modelData.width
+		opacity: IpcManager.logoutMenuOpen == true ? 0.8 : 0
+
+		Behavior on opacity {
+		  NumberAnimation {
+			duration: 200
+		  }
+		}
+	  }
 
 	  Region {
 		id: maskRegion
