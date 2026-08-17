@@ -3,7 +3,9 @@ import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Wayland
 import "./Bar"
+import "./Services/"
 import "Color.js" as Colors
 
 Scope {
@@ -25,6 +27,7 @@ Scope {
 	  required property var modelData
 	  property HyprlandMonitor monitor: Hyprland.monitorFor(modelData)
 
+	  WlrLayershell.keyboardFocus: IpcManager.focusState
 	  color: "transparent"
 	  exclusionMode: ExclusionMode.Normal
 	  exclusiveZone: barExclusionZone

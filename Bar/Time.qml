@@ -100,6 +100,11 @@ Container {
   }
 
   Connections {
+	function onCloseLogoutMenu() {
+	  root.overriden = false;
+	  root.logout = false;
+	}
+
 	function onLogoutMenu() {
 	  root.overriden = true;
 	  root.logout = true;
@@ -164,6 +169,49 @@ Container {
 	Item {
 	  id: logoutMenuRoot
 
+	  property var logoutModel: [
+		{
+		  color: Colors.red,
+		  text: "s",
+		  key: Qt.Key_S
+		},
+		{
+		  color: Colors.peach,
+		  text: "e",
+		  key: Qt.Key_E
+		},
+		{
+		  color: Colors.yellow,
+		  text: "r",
+		  key: Qt.Key_R
+		},
+		{
+		  color: Colors.green,
+		  text: "l",
+		  key: Qt.Key_L
+		},
+		{
+		  color: Colors.sky,
+		  text: "u",
+		  key: Qt.Key_U
+		},
+	  ]
+
+	  Component.onCompleted: {
+		forceActiveFocus();
+	  }
+	  Keys.onPressed: event => {
+		if (event.key == Qt.Key_Escape) {
+		  IpcManager.closeLogoutMenu();
+		} else {
+		  for (let button of logoutMenuRoot.logoutModel) {
+			if (button.key == event.key) {
+			  event.accepted = true;
+			}
+		  }
+		}
+	  }
+
 	  RowLayout {
 		spacing: root.logoutSpacing
 
@@ -172,29 +220,36 @@ Container {
 		  margins: root.logoutMargin
 		}
 
-		LogoutButton {
-		  color: Colors.red
-		  logoutText: "a"
+		Repeater {
+		  delegate: logoutButton
+		  model: logoutMenuRoot.logoutModel
 		}
 
-		LogoutButton {
-		  color: Colors.peach
-		  logoutText: "a"
-		}
+		Component {
+		  id: logoutButton
 
-		LogoutButton {
-		  color: Colors.yellow
-		  logoutText: "a"
-		}
+		  Item {
+			id: logoutButtonRoot
 
-		LogoutButton {
-		  color: Colors.green
-		  logoutText: "a"
-		}
+			// Key yen isn't on my keyboard, acts as an errorless analog for no bind
+			required property var modelData
 
-		LogoutButton {
-		  color: Colors.sky
-		  logoutText: "a"
+			Layout.fillHeight: true
+			Layout.fillWidth: true
+
+			Rectangle {
+			  anchors.fill: parent
+			  color: logoutButtonRoot.modelData.color
+			  radius: 7
+
+			  StyledText {
+				anchors.fill: parent
+				horizontalAlignment: Qt.AlignHCenter
+				text: logoutButtonRoot.modelData.text
+				verticalAlignment: Qt.AlignVCenter
+			  }
+			}
+		  }
 		}
 	  }
 	}
@@ -207,7 +262,7 @@ Container {
 	  property string component: "time"
 
 	  horizontalAlignment: Qt.AlignCenter
-	  text: Time.time
+	  text: TimeManager.time
 	  verticalAlignment: Qt.AlignVCenter
 	}
   }
@@ -376,29 +431,6 @@ Container {
 			}
 		  }
 		}
-	  }
-	}
-  }
-
-  component LogoutButton: Item {
-	id: logoutButtonRoot
-
-	property color color: Colors.surface1
-	property string logoutText: ""
-
-	Layout.fillHeight: true
-	Layout.fillWidth: true
-
-	Rectangle {
-	  anchors.fill: parent
-	  color: logoutButtonRoot.color
-	  radius: 7
-
-	  StyledText {
-		anchors.fill: parent
-		horizontalAlignment: Qt.AlignHCenter
-		text: logoutButtonRoot.logoutText
-		verticalAlignment: Qt.AlignVCenter
 	  }
 	}
   }
