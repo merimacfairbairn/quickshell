@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Io
 import Quickshell.Services.Notifications
 import Quickshell.Widgets
 
@@ -172,28 +173,33 @@ Container {
 	  property var logoutModel: [
 		{
 		  color: Colors.red,
-		  text: "s",
-		  key: Qt.Key_S
+		  text: "",
+		  key: Qt.Key_S,
+		  command: ["systemctl", "poweroff"]
 		},
 		{
 		  color: Colors.peach,
-		  text: "e",
-		  key: Qt.Key_E
+		  text: "󰗽",
+		  key: Qt.Key_E,
+		  command: ["hyprctl", "dispatch", "'hl.dsp.exit()'"]
 		},
 		{
 		  color: Colors.yellow,
-		  text: "r",
-		  key: Qt.Key_R
+		  text: "󰑓",
+		  key: Qt.Key_R,
+		  command: ["systemctl", "reboot"]
 		},
 		{
 		  color: Colors.green,
-		  text: "l",
-		  key: Qt.Key_L
+		  text: "󰌾",
+		  key: Qt.Key_L,
+		  command: ["hyprlock"]
 		},
 		{
 		  color: Colors.sky,
-		  text: "u",
-		  key: Qt.Key_U
+		  text: "󰤄",
+		  key: Qt.Key_U,
+		  command: ["systemctl", "suspend"]
 		},
 	  ]
 
@@ -206,7 +212,9 @@ Container {
 		} else {
 		  for (let button of logoutMenuRoot.logoutModel) {
 			if (button.key == event.key) {
+			  IpcManager.closeLogoutMenu();
 			  event.accepted = true;
+			  Quickshell.execDetached(button.command);
 			}
 		  }
 		}
@@ -244,7 +252,9 @@ Container {
 
 			  StyledText {
 				anchors.fill: parent
+				fontSize: 25
 				horizontalAlignment: Qt.AlignHCenter
+				propo: true
 				text: logoutButtonRoot.modelData.text
 				verticalAlignment: Qt.AlignVCenter
 			  }
