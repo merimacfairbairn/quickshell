@@ -91,12 +91,20 @@ Container {
   ]
 
   onHoveredChanged: {
-	if (root.hovered == true && MprisManager.getPlaying() == true) {
-	  root.overriden = true;
-	  root.mpris = true;
-	} else {
-	  root.overriden = false;
-	  root.mpris = true;
+	if (root.hovered == true) {
+	  if (root.logout == false) {
+		if (MprisManager.getPlaying() == true) {
+		  root.overriden = true;
+		  root.mpris = true;
+		}
+	  }
+	} else { // Hovered == false
+	  if (root.logout == true) {
+		IpcManager.closeLogoutMenu();
+	  } else {
+		root.overriden = false;
+		root.mpris = false;
+	  }
 	}
   }
 
@@ -107,6 +115,11 @@ Container {
 	}
 
 	function onLogoutMenu() {
+	  root.overriden = false;
+	  root.mpris = false;
+	  mprisTimer.stop();
+	  root.notified = false;
+	  notificationTimer.stop();
 	  if (root.monitor.focused == true) {
 		root.overriden = true;
 		root.logout = true;
@@ -132,9 +145,11 @@ Container {
 
   Connections {
 	function onTrackChanged() {
-	  root.overriden = true;
-	  root.mpris = true;
-	  console.log("track changed");
+	  if (root.overriden != true) {
+		root.overriden = true;
+		root.mpris = true;
+		console.log("track changed");
+	  }
 	}
 
 	target: MprisManager.defaultPlayer
