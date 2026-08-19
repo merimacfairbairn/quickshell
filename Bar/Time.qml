@@ -261,18 +261,54 @@ Container {
 			Layout.fillHeight: true
 			Layout.fillWidth: true
 
+			HoverHandler {
+			  id: logoutHoverHandler
+
+			  onHoveredChanged: {
+				if (logoutHoverHandler.hovered == true) {
+				  buttonBackground.color = Colors.surface1;
+				  logoutButtonText.color = logoutButtonRoot.modelData.color;
+				} else {
+				  buttonBackground.color = logoutButtonRoot.modelData.color;
+				  logoutButtonText.color = Colors.base;
+				}
+			  }
+			}
+
+			TapHandler {
+			  onTapped: {
+				Quickshell.execDetached(logoutButtonRoot.modelData.command);
+			  }
+			}
+
 			Rectangle {
+			  id: buttonBackground
+
 			  anchors.fill: parent
 			  color: logoutButtonRoot.modelData.color
 			  radius: 7
 
+			  Behavior on color {
+				ColorAnimation {
+				  duration: 100
+				}
+			  }
+
 			  StyledText {
+				id: logoutButtonText
+
 				anchors.fill: parent
 				fontSize: 25
 				horizontalAlignment: Qt.AlignHCenter
 				propo: true
 				text: logoutButtonRoot.modelData.text
 				verticalAlignment: Qt.AlignVCenter
+
+				Behavior on color {
+				  ColorAnimation {
+					duration: 100
+				  }
+				}
 			  }
 			}
 		  }
