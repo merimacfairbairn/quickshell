@@ -107,8 +107,10 @@ Container {
 	}
 
 	function onLogoutMenu() {
-	  root.overriden = true;
-	  root.logout = true;
+	  if (root.monitor.focused == true) {
+		root.overriden = true;
+		root.logout = true;
+	  }
 	}
 
 	target: IpcManager
