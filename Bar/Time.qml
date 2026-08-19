@@ -256,7 +256,6 @@ Container {
 		  Item {
 			id: logoutButtonRoot
 
-			// Key yen isn't on my keyboard, acts as an errorless analog for no bind
 			required property var modelData
 
 			Layout.fillHeight: true
@@ -380,6 +379,18 @@ Container {
 		let fullMargin = mprisToastRoot.innerMargin + mprisToastRoot.outerMargin;
 
 		return fullHeight - (fullMargin * 2);
+	  }
+
+	  TapHandler {
+		acceptedButtons: Qt.RightButton
+
+		onTapped: MprisManager.skip()
+	  }
+
+	  TapHandler {
+		acceptedButtons: Qt.LeftButton
+
+		onTapped: MprisManager.prev()
 	  }
 
 	  Rectangle {
