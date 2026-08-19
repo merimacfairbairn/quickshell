@@ -24,7 +24,7 @@ Scope {
 	  id: win
 
 	  property double barExclusionZone: 15
-	  property double barMaxHeight: 1000
+	  property double barMaxHeight: modelData.height
 	  required property var modelData
 	  property HyprlandMonitor monitor: Hyprland.monitorFor(modelData)
 
