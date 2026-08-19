@@ -95,7 +95,6 @@ Singleton {
 	} else if (adapter.type == DeviceType.Wired) {
 	  return false;
 	} else {
-	  console.log(adapter.type);
 	  return false;
 	}
   }

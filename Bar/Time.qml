@@ -148,7 +148,6 @@ Container {
 	  if (root.overriden != true) {
 		root.overriden = true;
 		root.mpris = true;
-		console.log("track changed");
 	  }
 	}
 
@@ -158,7 +157,7 @@ Container {
   Timer {
 	id: notificationTimer
 
-	interval: 2000
+	interval: 5000
 	repeat: false
 	running: false
 
@@ -276,9 +275,9 @@ Container {
 			}
 
 			TapHandler {
-			  onTapped: {
-				Quickshell.execDetached(logoutButtonRoot.modelData.command);
-			  }
+				onTapped: {
+					Quickshell.execDetached(logoutButtonRoot.modelData.command)
+				}
 			}
 
 			Rectangle {
