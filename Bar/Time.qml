@@ -66,7 +66,9 @@ Container {
 	  StateChangeScript {
 		script: {
 		  root.stack.replace(mprisToast);
-		  mprisTimer.restart();
+		  if (root.hovered != true) {
+			mprisTimer.restart();
+		  }
 		}
 	  }
 	},
@@ -145,7 +147,7 @@ Container {
 
   Connections {
 	function onTrackChanged() {
-	  if (root.overriden != true) {
+	  if (root.overriden != true && root.hovered != true) {
 		root.overriden = true;
 		root.mpris = true;
 	  }
@@ -197,7 +199,7 @@ Container {
 		  color: Colors.peach,
 		  text: "󰗽",
 		  key: Qt.Key_E,
-		  command: ["hyprctl", "dispatch", "'hl.dsp.exit()'"]
+		  command: ["hyprctl", "dispatch", "hl.dsp.exit()"]
 		},
 		{
 		  color: Colors.yellow,
@@ -275,9 +277,9 @@ Container {
 			}
 
 			TapHandler {
-				onTapped: {
-					Quickshell.execDetached(logoutButtonRoot.modelData.command)
-				}
+			  onTapped: {
+				Quickshell.execDetached(logoutButtonRoot.modelData.command);
+			  }
 			}
 
 			Rectangle {
@@ -445,9 +447,22 @@ Container {
 			implicitWidth: mprisToastRoot.getInnerHeight()
 			radius: 5
 
-			IconImage {
-			  anchors.fill: parent
-			  source: mprisToastRoot.trackInfo["albumArt"]
+			Image {
+			  anchors.centerIn: parent
+
+			  // Non-blocking load for local or remote track art
+			  asynchronous: true
+
+			  // Optional: clips the overflowing parts of the cropped image to the 1:1 box
+			  clip: true
+
+			  // Zoom and crop from the center to fill the square completely
+			  fillMode: Image.PreserveAspectCrop
+			  height: width
+			  source: mprisToastRoot.trackInfo["albumArt"] ?? ""
+
+			  // Force a 1:1 square target area based on the parent container
+			  width: Math.min(parent.width, parent.height)
 			}
 		  }
 
