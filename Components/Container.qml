@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Hyprland
 
 import "../Color.js" as Colors
+import "../Services/"
 
 Item {
   id: root
@@ -78,10 +79,28 @@ Item {
 	State {
 	  name: "closed"
 	  when: root.hovered == false && root.boxOpened == false && root.overriden == false
+			&& IpcManager.tabletMode == false
 
 	  PropertyChanges {
 		container.radius: root.boxRadius
 		root.implicitHeight: root.boxHeight
+		root.implicitWidth: root.boxWidth
+	  }
+
+	  StateChangeScript {
+		script: {
+		  stack.replace(root.defaultItem);
+		}
+	  }
+	},
+	State {
+	  name: "tablet"
+	  when: root.hovered == false && root.boxOpened == false && root.overriden == false
+			&& IpcManager.tabletMode == true
+
+	  PropertyChanges {
+		container.radius: root.boxRadius
+		root.implicitHeight: 33
 		root.implicitWidth: root.boxWidth
 	  }
 
@@ -97,13 +116,15 @@ Item {
 
 	  PropertyChanges {
 		container.radius: root.boxRadius + 3
-		root.implicitHeight: root.boxHeight + 2
+		root.implicitHeight: IpcManager.tabletMode ? 35 : root.boxHeight + 2
 		root.implicitWidth: root.boxWidth + 2
 	  }
 
 	  StateChangeScript {
 		script: {
-		  stack.replace(root.defaultItem);
+		  if (IpcManager.tabletMode == false) {
+			stack.replace(root.defaultItem);
+		  }
 		}
 	  }
 	},
@@ -182,8 +203,11 @@ Item {
 	  } else {
 		root.hovered = false;
 		root.boxOpened = false;
-		if (root.state == "closed") {
-		  root.stack.replace(root.defaultItem);
+		if (root.state == "closed" || root.state == "tablet") {
+		  if (IpcManager.tabletMode == false) {
+			root.stack.replace(root.defaultItem);
+			console.log("some");
+		  }
 		}
 	  }
 	}
@@ -197,6 +221,24 @@ Item {
 		root.boxOpened = true;
 	  }
 	}
+  }
+
+  TapHandler {
+	id: touchScreenTapHandler
+
+	acceptedDevices: PointerDevice.TouchScreen
+
+	onGrabChanged: state => {
+					 if (state == 1) {
+					   if (root.openedItem) {
+						 root.hovered = true;
+						 root.boxOpened = true;
+					   }
+					 } else if (state == 2) {
+					   root.hovered = false;
+					   root.boxOpened = false;
+					 }
+				   }
   }
 
   Rectangle {

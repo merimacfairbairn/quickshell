@@ -23,7 +23,7 @@ Scope {
 	PanelWindow {
 	  id: win
 
-	  property double barExclusionZone: 15
+	  property double barExclusionZone: IpcManager.tabletMode ? 35 : 15
 	  property double barMaxHeight: modelData.height
 	  required property var modelData
 	  property HyprlandMonitor monitor: Hyprland.monitorFor(modelData)

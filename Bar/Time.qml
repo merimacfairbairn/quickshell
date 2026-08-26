@@ -29,7 +29,8 @@ Container {
   property bool notified: false
 
   boxColor: Colors.mauve
-  defaultItem: time
+  boxWidth: IpcManager.tabletMode ? 600 : 100
+  defaultItem: IpcManager.tabletMode ? tabletTime : time
   exclusiveMonitor: root.monitor
   exclusiveToScreen: true
 
@@ -327,6 +328,141 @@ Container {
 	  horizontalAlignment: Qt.AlignCenter
 	  text: TimeManager.time
 	  verticalAlignment: Qt.AlignVCenter
+	}
+  }
+
+  Component {
+	id: tabletTime
+
+	Item {
+	  property string component: "tabletTime"
+
+	  Rectangle {
+		color: Colors.surface1
+		radius: root.boxRadius - 2
+
+		anchors {
+		  fill: parent
+		  margins: 3
+		}
+
+		Row {
+		  anchors {
+			bottom: parent.bottom
+			bottomMargin: 3
+			left: parent.left
+			leftMargin: 4
+			top: parent.top
+			topMargin: 3
+		  }
+
+		  Rectangle {
+			color: Colors.overlay0
+			implicitWidth: 25
+			radius: root.boxRadius - 4
+
+			anchors {
+			  bottom: parent.bottom
+			  top: parent.top
+			}
+
+			TapHandler {
+			  onTapped: {
+				console.log("kando");
+			  }
+			}
+
+			StyledText {
+			  anchors.fill: parent
+			  color: Colors.mauve
+			  fontSize: 14
+			  fontWeight: 10
+			  horizontalAlignment: Qt.AlignHCenter
+			  propo: true
+			  text: "󱗿"
+			  verticalAlignment: Qt.AlignVCenter
+			}
+		  }
+		}
+
+		CenteredText {
+		  color: Colors.mauve
+		  text: TimeManager.time
+		}
+	  }
+
+	  Row {
+		spacing: 3
+
+		anchors {
+		  bottom: parent.bottom
+		  bottomMargin: 3
+		  right: parent.right
+		  rightMargin: 7
+		  top: parent.top
+		  topMargin: 3
+		}
+
+		Rectangle {
+		  color: Colors.overlay0
+		  implicitWidth: 25
+		  radius: root.boxRadius - 4
+
+		  anchors {
+			bottom: parent.bottom
+			bottomMargin: 3
+			top: parent.top
+			topMargin: 3
+		  }
+
+		  TapHandler {
+			onTapped: {
+			  WorkspaceManager.activateWorkspaceById("-1");
+			}
+		  }
+
+		  StyledText {
+			anchors.fill: parent
+			color: Colors.mauve
+			fontSize: 14
+			fontWeight: 10
+			horizontalAlignment: Qt.AlignHCenter
+			propo: true
+			text: ""
+			verticalAlignment: Qt.AlignVCenter
+		  }
+		}
+
+		Rectangle {
+		  color: Colors.overlay0
+		  implicitWidth: 25
+		  radius: root.boxRadius - 4
+
+		  anchors {
+			bottom: parent.bottom
+			bottomMargin: 3
+			top: parent.top
+			topMargin: 3
+		  }
+
+		  TapHandler {
+			onTapped: {
+			  Hyprland.dispatch(`hl.dsp.focus({workspace = "+1"})`);
+			}
+		  }
+
+		  StyledText {
+			anchors.fill: parent
+			color: Colors.mauve
+			fontSize: 14
+			fontWeight: 10
+			horizontalAlignment: Qt.AlignHCenter
+			propo: true
+			text: ""
+			verticalAlignment: Qt.AlignVCenter
+		  }
+		}
+	  }
 	}
   }
 

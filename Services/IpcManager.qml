@@ -10,9 +10,12 @@ Singleton {
 
   property var focusState: WlrKeyboardFocus.None
   property bool logoutMenuOpen: false
+  property bool tabletMode: true
 
   signal closeLogoutMenu
+  signal enableTabletMode
   signal logoutMenu
+  signal normalMode
 
   onCloseLogoutMenu: {
 	root.focusState = WlrKeyboardFocus.None;
@@ -20,6 +23,16 @@ Singleton {
   }
 
   IpcHandler {
+	function disableTabletMode(): void {
+	  root.normalMode();
+	  root.tabletMode = false;
+	}
+
+	function enableTabletMode(): void {
+	  root.enableTabletMode();
+	  root.tabletMode = true;
+	}
+
 	function openLogoutMenu(): void {
 	  root.logoutMenu();
 	  root.focusState = WlrKeyboardFocus.Exclusive;
