@@ -95,7 +95,7 @@ Item {
 	},
 	State {
 	  name: "tablet"
-	  when: root.hovered == false && root.boxOpened == false && root.overriden == false
+	  when: ( root.hovered == false || IpcManager.tabletMode == true ) && root.boxOpened == false && root.overriden == false
 			&& IpcManager.tabletMode == true
 
 	  PropertyChanges {
