@@ -10,7 +10,7 @@ Singleton {
 
   property var focusState: WlrKeyboardFocus.None
   property bool logoutMenuOpen: false
-  property bool tabletMode: true
+  property bool tabletMode: false
 
   signal closeLogoutMenu
   signal enableTabletMode
