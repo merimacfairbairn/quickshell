@@ -22,7 +22,7 @@ Container {
   boxHeightOpened: root.batteryDisplayHeight
   boxRadius: radius
   boxWidth: 60
-  boxWidthOpened: 410
+  boxWidthOpened: 450
   defaultItem: icon
   exclusiveMonitor: root.monitor
   exclusiveToScreen: true
