@@ -344,6 +344,63 @@ Container {
 		anchors {
 		  fill: parent
 		  margins: 3
+		  topMargin: 3
+		}
+
+		Component {
+		  id: tabletButton
+
+		  Rectangle {
+			id: tabletButtonRoot
+
+			required property var modelData
+
+			color: Colors.overlay0
+			implicitWidth: 25
+			radius: root.boxRadius - 4
+
+			Behavior on color {
+			  ColorAnimation {
+				duration: 60
+			  }
+			}
+
+			anchors {
+			  bottom: parent.bottom
+			  top: parent.top
+			}
+
+			TapHandler {
+			  onTapped: {
+				tabletButtonRoot.modelData.onTapped();
+				tabletButtonRoot.color = Colors.text;
+				tapAnimationTimer.restart();
+			  }
+			}
+
+			Timer {
+			  id: tapAnimationTimer
+
+			  interval: 80
+			  repeat: false
+			  running: false
+
+			  onTriggered: {
+				tabletButtonRoot.color = Colors.overlay0;
+			  }
+			}
+
+			StyledText {
+			  anchors.fill: parent
+			  color: Colors.mauve
+			  fontSize: 14
+			  fontWeight: 10
+			  horizontalAlignment: Qt.AlignHCenter
+			  propo: true
+			  text: tabletButtonRoot.modelData.text
+			  verticalAlignment: Qt.AlignVCenter
+			}
+		  }
 		}
 
 		Row {
@@ -356,32 +413,16 @@ Container {
 			topMargin: 3
 		  }
 
-		  Rectangle {
-			color: Colors.overlay0
-			implicitWidth: 25
-			radius: root.boxRadius - 4
-
-			anchors {
-			  bottom: parent.bottom
-			  top: parent.top
-			}
-
-			TapHandler {
-			  onTapped: {
-				console.log("kando");
-			  }
-			}
-
-			StyledText {
-			  anchors.fill: parent
-			  color: Colors.mauve
-			  fontSize: 14
-			  fontWeight: 10
-			  horizontalAlignment: Qt.AlignHCenter
-			  propo: true
-			  text: "󱗿"
-			  verticalAlignment: Qt.AlignVCenter
-			}
+		  Repeater {
+			delegate: tabletButton
+			model: [
+			  {
+				text: "󱗿",
+				onTapped: function () {
+				  IpcManager.toggleLauncher();
+				}
+			  },
+			]
 		  }
 		}
 
@@ -389,77 +430,35 @@ Container {
 		  color: Colors.mauve
 		  text: TimeManager.time
 		}
-	  }
 
-	  Row {
-		spacing: 3
-
-		anchors {
-		  bottom: parent.bottom
-		  bottomMargin: 3
-		  right: parent.right
-		  rightMargin: 7
-		  top: parent.top
-		  topMargin: 3
-		}
-
-		Rectangle {
-		  color: Colors.overlay0
-		  implicitWidth: 25
-		  radius: root.boxRadius - 4
+		Row {
+		  spacing: 3
 
 		  anchors {
 			bottom: parent.bottom
 			bottomMargin: 3
+			right: parent.right
+			rightMargin: 4
 			top: parent.top
 			topMargin: 3
 		  }
 
-		  TapHandler {
-			onTapped: {
-			  WorkspaceManager.activateWorkspaceById("-1");
-			}
-		  }
-
-		  StyledText {
-			anchors.fill: parent
-			color: Colors.mauve
-			fontSize: 14
-			fontWeight: 10
-			horizontalAlignment: Qt.AlignHCenter
-			propo: true
-			text: ""
-			verticalAlignment: Qt.AlignVCenter
-		  }
-		}
-
-		Rectangle {
-		  color: Colors.overlay0
-		  implicitWidth: 25
-		  radius: root.boxRadius - 4
-
-		  anchors {
-			bottom: parent.bottom
-			bottomMargin: 3
-			top: parent.top
-			topMargin: 3
-		  }
-
-		  TapHandler {
-			onTapped: {
-			  Hyprland.dispatch(`hl.dsp.focus({workspace = "+1"})`);
-			}
-		  }
-
-		  StyledText {
-			anchors.fill: parent
-			color: Colors.mauve
-			fontSize: 14
-			fontWeight: 10
-			horizontalAlignment: Qt.AlignHCenter
-			propo: true
-			text: ""
-			verticalAlignment: Qt.AlignVCenter
+		  Repeater {
+			delegate: tabletButton
+			model: [
+			  {
+				text: "",
+				onTapped: function () {
+				  WorkspaceManager.activateWorkspaceById("-1");
+				}
+			  },
+			  {
+				text: "",
+				onTapped: function () {
+				  Hyprland.dispatch(`hl.dsp.focus({workspace = "+1"})`);
+				}
+			  },
+			]
 		  }
 		}
 	  }
