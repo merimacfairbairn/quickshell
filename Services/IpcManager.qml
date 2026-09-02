@@ -9,6 +9,7 @@ Singleton {
   id: root
 
   property var focusState: WlrKeyboardFocus.None
+  property bool launcherOpen: false
   property bool logoutMenuOpen: false
   property bool tabletMode: false
 
@@ -16,10 +17,14 @@ Singleton {
   signal enableTabletMode
   signal logoutMenu
   signal normalMode
+  signal toggleLauncher
 
   onCloseLogoutMenu: {
 	root.focusState = WlrKeyboardFocus.None;
 	root.logoutMenuOpen = false;
+  }
+  onToggleLauncher: {
+	root.launcherOpen = root.launcherOpen == true ? false : true;
   }
 
   IpcHandler {

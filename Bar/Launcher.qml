@@ -1,10 +1,13 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Hyprland
 
 import "../Color.js" as Colors
 
 import "../Components/"
+import "../Services/"
 
 Item {
   id: root
@@ -12,36 +15,53 @@ Item {
   property var buttons: [
 	{
 	  icon: "",
-	  color: Colors.surface1
+	  color: Colors.surface1,
+	  action: function () {}
 	},
 	{
 	  icon: "",
-	  color: Colors.yellow
+	  color: Colors.yellow,
+	  action: function () {
+		Quickshell.execDetached("nemo");
+	  }
 	},
 	{
 	  icon: "󰪶",
-	  color: Colors.green
+	  color: Colors.green,
+	  action: function () {
+		Hyprland.dispatch("hl.dsp.exec_cmd('firefox --new-window \"https://office.voidarc.co.uk\"')");
+	  }
 	},
 	{
 	  icon: "󰊻",
-	  color: Colors.sky
+	  color: Colors.sky,
+	  action: function () {
+		Hyprland.dispatch("hl.dsp.exec_cmd('firefox --new-window \"https://teams.cloud.microsoft\"')");
+	  }
 	},
 	{
 	  icon: "",
-	  color: Colors.mauve
+	  color: Colors.mauve,
+	  action: function () {
+		Hyprland.dispatch("hl.dsp.exec_cmd('kitty')");
+	  }
 	},
 	{
 	  icon: "󰼁",
-	  color: Colors.red
+	  color: Colors.red,
+	  action: function () {}
 	},
 	{
 	  icon: "󰈹",
-	  color: Colors.peach
+	  color: Colors.peach,
+	  action: function () {
+		Hyprland.dispatch("hl.dsp.exec_cmd('firefox')");
+	  }
 	}
   ]
   property real cx: width / 2
   property real cy: height / 2
-  property bool hidden: true
+  property bool hidden: !IpcManager.launcherOpen
   property real r: 120
   property double topMargin: 50
 
@@ -68,12 +88,6 @@ Item {
 	  }
 	}
   ]
-  //  Behavior on topMargin {
-  // SpringAnimation {
-  //   damping: 0.3
-  //   spring: 5
-  // }
-  //  }
   transitions: [
 	Transition {
 	  from: "hidden"
@@ -155,6 +169,13 @@ Item {
 		implicitHeight: 80 + (itemRoot.index === 0 ? 2 : 0)
 		implicitWidth: 80 + (itemRoot.index === 0 ? 2 : 0)
 		radius: 10
+
+		TapHandler {
+		  onTapped: {
+			itemRoot.modelData.action();
+			IpcManager.toggleLauncher();
+		  }
+		}
 
 		anchors {
 		  horizontalCenter: parent.horizontalCenter
