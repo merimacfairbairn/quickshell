@@ -56,8 +56,6 @@ Scope {
 		id: maskRegion
 
 		Region {
-		  // Setting to subtract effectively disables the region
-		  // intersection: Intersection.Subtract
 		  item: launcher
 		}
 
@@ -109,9 +107,6 @@ Scope {
 
 		Launcher {
 		  id: launcher
-
-		  // visible: false
-
 		}
 
 		Row {
