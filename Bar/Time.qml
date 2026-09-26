@@ -501,7 +501,7 @@ Container {
 			IconImage {
 			  anchors.fill: parent
 			  anchors.margins: 10
-			  source: root.latestNotif.image
+			  source: "file://" + root.latestNotif.appIcon
 			}
 		  }
 
