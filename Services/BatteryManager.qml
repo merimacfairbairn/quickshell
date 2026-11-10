@@ -105,7 +105,7 @@ Singleton {
 		let timeArr = secondsToTime(time);
 		// If more than 1 hour
 		if (timeArr.hours >= 1 || timeArr.hourNeedsIncrement == 1) {
-		  finalString += timeArr.Hours + " Hours ";
+		  finalString += timeArr.hours + " Hours ";
 		  // If minutes not 0
 		  if (timeArr.minutesRounded > 1) {
 			finalString += timeArr.minutesRounded + " Minutes";
