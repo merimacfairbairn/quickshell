@@ -23,7 +23,7 @@ Singleton {
 	  return Colors.sky;
 	} else if (mainBattery.state == UPowerDeviceState.Charging) {
 	  return Colors.mauve;
-	} else if (mainBattery.state == UPowerDeviceState.PendingCharge | mainBattery.state
+	} else if (mainBattery.state == UPowerDeviceState.PendingCharge || mainBattery.state
 			   == UPowerDeviceState.PendingDischarge) {
 	  return Colors.peach;
 	} else if (batteryPercentage <= criticalLevel) {
@@ -36,10 +36,10 @@ Singleton {
   function getBatteryIcon(battery) {
 	if (battery.state == UPowerDeviceState.Charging) {
 	  return "󰂄";
-	} else if (battery.state == UPowerDeviceState.PendingCharge | battery.state
+	} else if (battery.state == UPowerDeviceState.PendingCharge || battery.state
 			   == UPowerDeviceState.PendingDischarge) {
 	  return "󰚥";
-	} else if (battery.state == UPowerDeviceState.Discharging | battery.state
+	} else if (battery.state == UPowerDeviceState.Discharging || battery.state
 			   == UPowerDeviceState.FullyCharged) {
 	  let iconArr = ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"];
 	  let batteryCharge = battery.percentage;
