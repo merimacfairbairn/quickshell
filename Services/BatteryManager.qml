@@ -55,7 +55,7 @@ Singleton {
   }
 
   function getBatteryPercentage(battery) {
-	return battery.percentage * 100;
+	return Math.round(battery.percentage * 100);
   }
 
   function getBatteryText() {
